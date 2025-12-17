@@ -12,7 +12,8 @@ dotenv.config();
 const app = express();
 
 app.use(morgan("dev"));
-app.use(cors({ origin: process.env.CORS_ORIGIN || "http://localhost:8080", credentials: true }));
+app.use(cors({ origin: "*" }));
+
 app.use(express.json({ limit: "2mb" }));
 
 app.get("/api/health", (req, res) => res.json({ ok: true }));
