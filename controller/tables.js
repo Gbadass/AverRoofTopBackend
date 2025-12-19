@@ -113,8 +113,15 @@ export const getTablesWithStats = async (req, res, next) => {
     const tables = await Table.find({}).sort({ tableNumber: 1 }).lean();
 
     const stats = await Scan.aggregate([
-      { $group: { _id: "$table", scans: { $sum: 1 }, lastScanAt: { $max: "$createdAt" } } },
+      {
+        $group: {
+          _id: "$tableId", // ✅ FIX
+          scans: { $sum: 1 },
+          lastScanAt: { $max: "$createdAt" },
+        },
+      },
     ]);
+    
 
     const statsMap = new Map(stats.map((s) => [String(s._id), s]));
 
